@@ -1,11 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaQuestion, FaBrain, FaHeartbeat, FaNotesMedical, FaPills, FaTimesCircle, FaCheckCircle, FaArrowRight, FaHeart } from 'react-icons/fa';
+// FIX: Added 'useNavigate' and removed unused 'Link'
+import { useNavigate } from 'react-router-dom'; 
+import { useAuth } from '../context/AuthContext'; // FIX: Added missing slash
+// FIX: Removed unused 'FaArrowRight'
+import { FaQuestion, FaBrain, FaHeartbeat, FaNotesMedical, FaPills, FaTimesCircle, FaCheckCircle, FaHeart } from 'react-icons/fa';
 
 const AboutPCOS = () => {
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
+
+  const handleAssessmentClick = () => {
+    if (isLoggedIn) {
+      navigate('/check/combined');
+    } else {
+      navigate('/register');
+    }
+  };
+
   return (
-    
-    <div className="container" style={{ maxWidth: '1000px', paddingBottom: '80px' }}>
+    <div className="container page-spacing" style={{ maxWidth: '1000px', paddingBottom: '80px' }}>
       
       {/* 1. Header Section */}
       <div className="about-header-section">
@@ -142,7 +155,6 @@ const AboutPCOS = () => {
       </div>
 
       <div className="myth-fact-grid-wrapper">
-        {/* Row 1 */}
         <div className="myth-fact-container">
           <div className="myth-card">
             <div className="myth-label"><FaTimesCircle /> Myth</div>
@@ -154,7 +166,6 @@ const AboutPCOS = () => {
           </div>
         </div>
 
-        {/* Row 2 */}
         <div className="myth-fact-container">
           <div className="myth-card">
             <div className="myth-label"><FaTimesCircle /> Myth</div>
@@ -166,7 +177,6 @@ const AboutPCOS = () => {
           </div>
         </div>
 
-        {/* Row 3 */}
         <div className="myth-fact-container">
           <div className="myth-card">
             <div className="myth-label"><FaTimesCircle /> Myth</div>
@@ -178,7 +188,6 @@ const AboutPCOS = () => {
           </div>
         </div>
         
-        {/* Row 4 */}
          <div className="myth-fact-container">
           <div className="myth-card">
             <div className="myth-label"><FaTimesCircle /> Myth</div>
@@ -190,7 +199,6 @@ const AboutPCOS = () => {
           </div>
         </div>
         
-         {/* Row 5 */}
          <div className="myth-fact-container">
           <div className="myth-card">
             <div className="myth-label"><FaTimesCircle /> Myth</div>
@@ -212,9 +220,10 @@ const AboutPCOS = () => {
           Take our AI-powered screening test to get personalized insights about your symptoms. 
           Early detection can help you manage PCOS more effectively.
         </p>
-        <Link to="/check/combined" className="btn-assessment">
+        
+        <button onClick={handleAssessmentClick} className="btn-assessment">
           Start Your Assessment
-        </Link>
+        </button>
       </div>
 
     </div>

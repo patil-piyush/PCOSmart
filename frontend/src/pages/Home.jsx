@@ -1,8 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// FIX: Added 'useNavigate' to imports
+import { Link, useNavigate } from 'react-router-dom';
 import { FaUpload, FaClipboardList, FaBrain, FaLeaf, FaArrowRight } from 'react-icons/fa';
+// FIX: Added missing slash in path
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
+
+  // Logic: Go to test if logged in, else register
+  const handleStartCheck = () => {
+    if (isLoggedIn) {
+      navigate('/check/image');
+    } else {
+      navigate('/register');
+    }
+  };
+
   return (
     <div>
       {/* 1. Hero Section */}
@@ -13,18 +28,21 @@ const Home = () => {
           <p>PCOSmart uses advanced AI to analyze ultrasound images and symptoms, providing personalized insights.</p>
           
           <div className="flex justify-center gap-20">
-            {/* LINK 1: Takes you to Image Test directly */}
-            <Link to="/check/image" className="btn btn-primary">
+            {/* BUTTON WITH LOGIC */}
+            <button onClick={handleStartCheck} className="btn btn-primary">
               Start Your Check <FaArrowRight />
-            </Link>
-            <Link to="/register" className="btn btn-outline">
-              Create Account
-            </Link>
+            </button>
+            
+            {!isLoggedIn && (
+              <Link to="/register" className="btn btn-outline">
+                Create Account
+              </Link>
+            )}
           </div>
         </div>
       </section>
 
-      {/* 2. Stats Section */}
+      {/* Stats Section */}
       <section className="stats-section">
         <div className="container stats-grid">
           <div><div className="stat-number">95%</div><div>Accuracy Rate</div></div>
@@ -34,7 +52,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 3. Why Choose PCOSmart */}
+      {/* Features */}
       <section className="container" style={{ padding: '80px 20px' }}>
         <div className="section-title">
           <h2>Why Choose PCOSmart?</h2>
@@ -59,13 +77,12 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 4. How It Works Section */}
+      {/* 4. How It Works */}
       <section style={{ background: 'white', padding: '80px 0' }}>
         <div className="container">
           <div className="section-title">
             <h2>How It Works</h2>
             <p style={{ color: '#718096' }}>Get your personalized PCOS assessment in just four simple steps</p>
-            <br></br>
           </div>
           <div className="steps-grid">
             <div>
@@ -90,29 +107,31 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Assessment Button below steps */}
           <div style={{ textAlign: 'center', marginTop: '50px' }}>
-            <Link to="/check/image" className="btn-assessment">
+            <button onClick={handleStartCheck} className="btn-assessment">
               Start Your Assessment <FaArrowRight />
-            </Link>
+            </button>
           </div>
         </div>
       </section>
 
-      {/* 5. CTA Section (The Purple/Pink Box from Screenshot) */}
+      {/* 5. CTA Section */}
       <section className="container">
         <div className="cta-box">
           <h2>Take Control of Your Health Today</h2>
           <p>
             Join thousands of women who have taken the first step towards understanding their reproductive health. Our AI-powered screening is fast, private, and completely free to try.
           </p>
-          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            {/* LINK 2: Get Started -> Register */}
-            <Link to="/register" className="btn-white">
-              Get Started Free
-            </Link>
-            
-            {/* LINK 3: Learn More -> Awareness */}
+          <div className="action-buttons-container" style={{ marginTop: '30px' }}>
+            {!isLoggedIn ? (
+              <Link to="/register" className="btn-white">
+                Get Started Free
+              </Link>
+            ) : (
+              <Link to="/check/combined" className="btn-white">
+                Go to Dashboard
+              </Link>
+            )}
             <Link to="/awareness" className="btn-transparent">
               Learn More
             </Link>
