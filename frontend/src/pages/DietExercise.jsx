@@ -1,12 +1,68 @@
 import React, { useState } from 'react';
-import { FaAppleAlt, FaDumbbell, FaMoon, FaLeaf, FaBan, FaQuestion, FaChevronDown } from 'react-icons/fa';
+import { FaAppleAlt, FaDumbbell, FaMoon, FaLeaf, FaBan, FaQuestion, FaChevronDown, FaPaperPlane, FaTimes } from 'react-icons/fa';
 
 const DietExercise = () => {
-  // State for FAQ Accordion
+  // ==========================
+  // 1. STATE MANAGEMENT
+  // ==========================
   const [activeIndex, setActiveIndex] = useState(null);
+  
+  // Chatbot States
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatInput, setChatInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [chatHistory, setChatHistory] = useState([
+    { role: "model", parts: [{ text: "Hi! I'm Cora, your PCOS health companion. How can I help you with your diet or exercise journey today?" }] }
+  ]);
 
+  // ==========================
+  // 2. HANDLERS
+  // ==========================
   const toggleFAQ = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
+  };
+
+const handleChatSubmit = async (e) => {
+    e.preventDefault();
+    if (!chatInput.trim()) return;
+
+    const userMsg = { role: "user", parts: [{ text: chatInput }] };
+    
+    // UI update: add user message immediately
+    setChatHistory(prev => [...prev, userMsg]);
+    setChatInput("");
+    setIsTyping(true);
+
+    try {
+      // 🟢 FIX: Filter history so it only includes messages AFTER the initial greeting
+      // Gemini requires the very first message in history to be 'user'
+      const historyForBackend = chatHistory.filter((msg, index) => index > 0);
+
+      const response = await fetch('http://localhost:5000/api/auth/pcos-chatbot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          message: chatInput,
+          history: historyForBackend 
+        })
+      });
+      
+      const data = await response.json();
+
+      if (response.ok) {
+        setChatHistory(prev => [...prev, { role: "model", parts: [{ text: data.text }] }]);
+      } else {
+        throw new Error(data.error || "Server error");
+      }
+    } catch (err) {
+      console.error("Chat Error:", err);
+      setChatHistory(prev => [...prev, { 
+        role: "model", 
+        parts: [{ text: "I'm having a little trouble. Could you try asking that again?" }] 
+      }]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const faqs = [
@@ -44,7 +100,7 @@ const DietExercise = () => {
 
       {/* ==========================
           1. NUTRITION SECTION 
-         ========================== */}
+          ========================== */}
       <div className="diet-section-header">
         <div className="icon-header-lg">
           <FaAppleAlt />
@@ -113,7 +169,7 @@ const DietExercise = () => {
 
       {/* ==========================
           2. EXERCISE SECTION 
-         ========================== */}
+          ========================== */}
       <div className="diet-section-header" style={{ marginTop: '80px' }}>
         <div className="icon-header-lg">
           <FaDumbbell />
@@ -181,7 +237,7 @@ const DietExercise = () => {
 
       {/* ==========================
           3. SLEEP SECTION 
-         ========================== */}
+          ========================== */}
       <div className="card" style={{ marginTop: '60px' }}>
         <h3 style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '30px', fontSize: '1.5rem' }}>
           <div style={{ width: '40px', height: '40px', background: '#F3E8FF', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9F7AEA' }}>
@@ -213,8 +269,8 @@ const DietExercise = () => {
       </div>
 
       {/* ==========================
-          4. FAQ SECTION (Moved Here) 
-         ========================== */}
+          4. FAQ SECTION 
+          ========================== */}
       <div style={{ marginTop: '80px', marginBottom: '40px' }}>
         <div className="diet-section-header">
           <div className="icon-header-lg">
@@ -243,6 +299,82 @@ const DietExercise = () => {
             </div>
           ))}
         </div>
+      </div>
+
+   
+      {/* ==========================
+          5. BOT SECTION (New)
+          ========================== */}
+      <div className={`chat-bot-container ${isChatOpen ? 'open' : ''}`}>
+        {!isChatOpen ? (
+          <button className="chat-toggle-btn" onClick={() => setIsChatOpen(true)}>
+            <FaQuestion />
+            <span>Ask Cora</span>
+          </button>
+        ) : (
+          <div className="chat-window">
+            <div className="chat-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '8px', height: '8px', background: '#48BB78', borderRadius: '50%' }}></div>
+                <span>Cora: PCOS Expert</span>
+              </div>
+              <button onClick={() => setIsChatOpen(false)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>
+                <FaTimes />
+              </button>
+            </div>
+            
+            <div className="chat-messages">
+              {chatHistory.map((msg, i) => (
+                <div key={i} className={`message-bubble ${msg.role === 'user' ? 'user' : 'model'}`}>
+                  {msg.parts[0].text}
+                </div>
+              ))}
+              {isTyping && (
+                <div className="message-bubble model" style={{ fontStyle: 'italic', opacity: 0.7 }}>
+                  Cora is typing...
+                </div>
+              )}
+            </div>
+
+            {/* ADDED: QUICK ACTIONS BLOCK */}
+            <div className="quick-actions" style={{ display: 'flex', gap: '8px', padding: '10px', flexWrap: 'wrap', background: '#fdfbff', borderTop: '1px solid #eee' }}>
+              {["Meal Plan", "Yoga Tips", "Cardio vs Lifting"].map(tag => (
+                <button 
+                  key={tag}
+                  type="button"
+                  onClick={() => setChatInput(`Tell me about ${tag} for PCOS`)}
+                  style={{ 
+                    fontSize: '0.75rem', 
+                    padding: '6px 12px', 
+                    borderRadius: '15px', 
+                    border: '1px solid #D6689C', 
+                    background: 'white', 
+                    color: '#D6689C', 
+                    cursor: 'pointer',
+                    fontWeight: '500',
+                    transition: '0.2s'
+                  }}
+                  onMouseOver={(e) => e.target.style.background = '#FFF5F8'}
+                  onMouseOut={(e) => e.target.style.background = 'white'}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+
+            <form className="chat-input-area" onSubmit={handleChatSubmit}>
+              <input 
+                type="text" 
+                value={chatInput} 
+                onChange={(e) => setChatInput(e.target.value)} 
+                placeholder="Ask about diet or exercise..." 
+              />
+              <button type="submit" disabled={isTyping}>
+                <FaPaperPlane />
+              </button>
+            </form>
+          </div>
+        )}
       </div>
 
     </div>
