@@ -22,7 +22,7 @@ const getChatbotAiResponse = async (req, res) => {
     const chat = model.startChat({
       history: Array.isArray(history) && history.length > 0 ? history : [],
       generationConfig: {
-        maxOutputTokens: 150, // 🟢 LIMITS THE LENGTH PHYSICALLY
+        maxOutputTokens: 500, // 🟢 LIMITS THE LENGTH PHYSICALLY
         temperature: 0.7,
       },
     });

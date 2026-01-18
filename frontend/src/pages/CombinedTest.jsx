@@ -26,8 +26,17 @@ const CombinedTest = () => {
   const handleOptionSelect = (option) => setAnswers({ ...answers, [currentQ]: option });
 
   const nextQuestion = () => {
-    if (currentQ < questions.length - 1) setCurrentQ(currentQ + 1);
-    else navigate('/result/combined');
+    if (currentQ < questions.length - 1) {
+      setCurrentQ(currentQ + 1);
+    } else {
+      // PASS DATA TO RESULT PAGE
+      navigate('/result/combined', { 
+        state: { 
+          image: image, // Pass the blob URL
+          testData: { probability: 0.78 } // Mock or Real result
+        } 
+      });
+    }
   };
 
   const prevQuestion = () => {
@@ -42,7 +51,6 @@ const CombinedTest = () => {
   return (
     <div className="container page-spacing" style={{ maxWidth: '800px' }}>
       
-      {/* Header & Progress */}
       <div className="text-center mb-8">
         <span className="badge">Step {currentStep} of {totalSteps}</span>
         <h1 style={{ fontSize: '2.5rem', marginTop: '10px' }}>Combined <span style={{ color: '#D6689C' }}>Analysis</span></h1>
@@ -52,11 +60,9 @@ const CombinedTest = () => {
         </div>
       </div>
 
-      {/* STAGE 1: IMAGE UPLOAD */}
       {stage === 'image' && (
         <div className="card fade-in">
           <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Upload Ultrasound Image</h2>
-          
           <label className="upload-zone">
             {image ? (
               <img src={image} alt="Preview" style={{ maxHeight: '300px', borderRadius: '10px' }} />
@@ -69,8 +75,6 @@ const CombinedTest = () => {
             )}
             <input type="file" hidden onChange={handleImageUpload} accept="image/*" />
           </label>
-
-          {/* Button with specific margin */}
           <div style={{ marginTop: '40px', textAlign: 'center' }}>
             <button 
               className={`btn btn-primary ${!image ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -83,13 +87,11 @@ const CombinedTest = () => {
         </div>
       )}
 
-      {/* STAGE 2: QUESTIONS */}
       {stage === 'questions' && (
         <div className="card fade-in">
           <h3 style={{ fontSize: '1.4rem', marginBottom: '25px', color: '#2D3748' }}>
             {questions[currentQ].text}
           </h3>
-
           <div className="options-list">
             {questions[currentQ].options.map((option, idx) => (
               <div 
@@ -109,8 +111,6 @@ const CombinedTest = () => {
               </div>
             ))}
           </div>
-
-          {/* Buttons with specific spacing */}
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '40px' }}>
             <button className="btn btn-outline" onClick={prevQuestion}>
               <FaArrowLeft /> Back
@@ -125,7 +125,6 @@ const CombinedTest = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };

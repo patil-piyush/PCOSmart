@@ -32,7 +32,12 @@ const ImageTest = () => {
         </label>
         
         <div style={{ marginTop: '30px', textAlign: 'center' }}>
-          <Link to="/result/image" className={`btn btn-primary ${!image ? 'opacity-50 pointer-events-none' : ''}`}>
+          {/* PASS IMAGE STATE HERE */}
+          <Link 
+            to="/result/image" 
+            state={{ image: image }} 
+            className={`btn btn-primary ${!image ? 'opacity-50 pointer-events-none' : ''}`}
+          >
             Analyze Image
           </Link>
         </div>
