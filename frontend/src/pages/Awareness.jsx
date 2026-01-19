@@ -3,7 +3,7 @@ import { FaBookOpen, FaVideo, FaLightbulb, FaUsers, FaExternalLinkAlt, FaPlay, F
 
 const Awareness = () => {
   
-  // Data for Articles
+  // 1. Articles with REAL URLs
   const articles = [
     {
       category: "Education",
@@ -11,7 +11,8 @@ const Awareness = () => {
       title: "Understanding PCOS: A Complete Guide",
       desc: "Everything you need to know about Polycystic Ovary Syndrome, from diagnosis to treatment options.",
       tagColor: "#FCE7F3",
-      textColor: "#D6689C"
+      textColor: "#D6689C",
+      link: "https://www.healthline.com/health/polycystic-ovary-disease"
     },
     {
       category: "Mental Health",
@@ -19,7 +20,8 @@ const Awareness = () => {
       title: "PCOS and Mental Health: Breaking the Stigma",
       desc: "Exploring the psychological impact of PCOS and strategies for emotional well-being.",
       tagColor: "#FEEBC8",
-      textColor: "#DD6B20"
+      textColor: "#DD6B20",
+      link: "https://www.psychologytoday.com/us/blog/womens-mental-health-matters/201512/pcos-and-depression"
     },
     {
       category: "Fertility",
@@ -27,7 +29,8 @@ const Awareness = () => {
       title: "Fertility and PCOS: What You Should Know",
       desc: "Navigating fertility challenges with PCOS and understanding your options.",
       tagColor: "#E9D8FD",
-      textColor: "#805AD5"
+      textColor: "#805AD5",
+      link: "https://www.mayoclinic.org/diseases-conditions/pcos/diagnosis-treatment/drc-20353443"
     },
     {
       category: "Natural Remedies",
@@ -35,26 +38,30 @@ const Awareness = () => {
       title: "Natural Remedies for PCOS Symptoms",
       desc: "Evidence-based natural approaches to managing common PCOS symptoms.",
       tagColor: "#C6F6D5",
-      textColor: "#276749"
+      textColor: "#276749",
+      link: "https://www.medicalnewstoday.com/articles/322637"
     }
   ];
 
-  // Data for Videos
+  // 2. Videos with YOUTUBE URLs
   const videos = [
     {
       title: "PCOS Explained by Experts",
       desc: "Medical experts break down PCOS causes and treatments",
-      duration: "12:34"
+      duration: "12:34",
+      videoUrl: "https://youtu.be/Zrwzv3-SP7c?si=yoYn0Y2-SVZI7840" // Replace with real ID if needed
     },
     {
       title: "30-Minute PCOS-Friendly Workout",
       desc: "Low-impact exercises designed for hormonal balance",
-      duration: "31:20"
+      duration: "31:20",
+      videoUrl: "https://youtu.be/c57ksNThbKQ?si=oUDhhg8HeqZmvrO2"
     },
     {
       title: "Meal Prep for PCOS: Week of Recipes",
-      desc: "Delicious anti-inflammatory meals for the whole week",
-      duration: "18:45"
+      desc: "PCOS Diet, Supplements, Herbs & Lifestyle Recommendations + Do You NEED to Lose Weight?",
+      duration: "23:51",
+      videoUrl: "https://youtu.be/VrFaw0J7p_E?si=2v-QD4bm3WfY1jjV"
     }
   ];
 
@@ -102,7 +109,11 @@ const Awareness = () => {
             </div>
             <h3 className="article-title">{item.title}</h3>
             <p className="article-desc">{item.desc}</p>
-            <a href="#" className="read-link">Read More <FaExternalLinkAlt size={12} /></a>
+            
+            {/* LINK ADDED HERE */}
+            <a href={item.link} target="_blank" rel="noopener noreferrer" className="read-link">
+              Read More <FaExternalLinkAlt size={12} />
+            </a>
           </div>
         ))}
       </div>
@@ -117,18 +128,27 @@ const Awareness = () => {
 
       <div className="result-grid-3" style={{ marginBottom: '80px', marginTop: '0' }}>
         {videos.map((video, index) => (
-          <div key={index} className="video-card">
-            <div className="video-thumbnail">
-              <div className="play-btn-circle">
-                <FaPlay style={{ marginLeft: '4px' }} />
+          /* VIDEO CARD LINK WRAPPER */
+          <a 
+            key={index} 
+            href={video.videoUrl} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <div className="video-card">
+              <div className="video-thumbnail">
+                <div className="play-btn-circle">
+                  <FaPlay style={{ marginLeft: '4px' }} />
+                </div>
+                <span className="duration-badge">{video.duration}</span>
               </div>
-              <span className="duration-badge">{video.duration}</span>
+              <div className="video-content">
+                <h4 className="video-title">{video.title}</h4>
+                <p style={{ fontSize: '0.9rem', color: '#718096' }}>{video.desc}</p>
+              </div>
             </div>
-            <div className="video-content">
-              <h4 className="video-title">{video.title}</h4>
-              <p style={{ fontSize: '0.9rem', color: '#718096' }}>{video.desc}</p>
-            </div>
-          </div>
+          </a>
         ))}
       </div>
 
@@ -159,8 +179,6 @@ const Awareness = () => {
       </div>
 
       <div className="stories-grid">
-        
-        {/* Story 1 */}
         <div className="story-card">
           <div className="story-header">
             <div className="story-avatar" style={{ background: '#D6689C' }}>S</div>
@@ -177,7 +195,6 @@ const Awareness = () => {
           </div>
         </div>
 
-        {/* Story 2 */}
         <div className="story-card">
           <div className="story-header">
             <div className="story-avatar" style={{ background: '#9F7AEA' }}>P</div>
@@ -194,7 +211,6 @@ const Awareness = () => {
           </div>
         </div>
 
-        {/* Story 3 */}
         <div className="story-card">
           <div className="story-header">
             <div className="story-avatar" style={{ background: '#DD6B20' }}>E</div>
@@ -210,7 +226,6 @@ const Awareness = () => {
             <FaHeart size={12} /> Founded a local PCOS support group
           </div>
         </div>
-
       </div>
 
     </div>
