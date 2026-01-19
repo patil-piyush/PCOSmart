@@ -37,7 +37,7 @@ const Awareness = () => {
       link: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9964744/"
     },
     {
-      category: "Education",
+      category: "Healthcare",
       readTime: "9 min read",
       title: "PCOS in Adolescents: Pathophysiology, Symptoms, and Treatment",
       desc: "An in-depth discussion of how Polycystic Ovary Syndrome presents in adolescent girls, with emphasis on hormonal mechanisms, clinical features, and treatment considerations.",

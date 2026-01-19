@@ -25,19 +25,20 @@ const Home = () => {
     }
   };
 
-  // --- Three.js Logic ---
- // --- Three.js Logic ---
+// --- Three.js Logic ---
   useEffect(() => {
     const currentMount = mountRef.current;
     
     // 1. Scene Setup
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xfff5f8); // Matches your hero theme
+    scene.background = new THREE.Color(0xfff5f8); 
 
     // 2. Camera Setup
     const camera = new THREE.PerspectiveCamera(75, currentMount.clientWidth / currentMount.clientHeight, 0.1, 1000);
-    // MOVED CAMERA CLOSER: Changed Z from 4 to 2.5
-    camera.position.set(0, 0, 2.5); 
+    
+    // --- FIX 1: Move Camera Back (Zoom Out) ---
+    // Changed 2.5 -> 12
+    camera.position.set(0, 0, 12); 
 
     // 3. Renderer Setup
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -56,8 +57,8 @@ const Home = () => {
     // 5. Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.enableZoom = true; // Enabled zoom so you can adjust it yourself while testing
-    controls.autoRotate = true; // Optional: Makes it spin slowly which looks nice
+    controls.enableZoom = true;
+    controls.autoRotate = true; 
     controls.autoRotateSpeed = 2.0;
 
     // 6. Load Model
@@ -66,14 +67,12 @@ const Home = () => {
     loader.load('/uterus 3d model.glb', (gltf) => {
       const model = gltf.scene;
       
-      // --- FIX: SCALE THE MODEL UP ---
-      // Try changing this number: 10, 20, or 50 until it fits perfectly.
-      // Based on your image, it likely needs to be 20x or 30x bigger.
-      const scaleFactor = 25; 
+      // --- FIX 2: Adjust Scale ---
+      // Changed 25 -> 12 (Make it smaller so it fits screen)
+      const scaleFactor = 12; 
       model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-      // --- FIX: CENTER THE MODEL ---
-      // This calculates the bounding box and centers it perfectly
+      // --- FIX 3: Center the Model ---
       const box = new THREE.Box3().setFromObject(model);
       const center = box.getCenter(new THREE.Vector3());
       model.position.x -= center.x;
