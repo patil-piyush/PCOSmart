@@ -7,39 +7,39 @@ const Awareness = () => {
   const articles = [
     {
       category: "Education",
-      readTime: "8 min read",
-      title: "Understanding PCOS: A Complete Guide",
-      desc: "Everything you need to know about Polycystic Ovary Syndrome, from diagnosis to treatment options.",
+      readTime: "7 min read",
+      title: "Polycystic Ovary Syndrome (PCOS): Key Facts and Overview",
+      desc: "An evidence-based overview of Polycystic Ovary Syndrome, covering symptoms, causes, diagnosis, and global health impact as outlined by the World Health Organization.",
       tagColor: "#FCE7F3",
       textColor: "#D6689C",
-      link: "https://www.healthline.com/health/polycystic-ovary-disease"
+      link: "https://www.who.int/news-room/fact-sheets/detail/polycystic-ovary-syndrome"
     },
     {
-      category: "Mental Health",
-      readTime: "6 min read",
-      title: "PCOS and Mental Health: Breaking the Stigma",
-      desc: "Exploring the psychological impact of PCOS and strategies for emotional well-being.",
-      tagColor: "#FEEBC8",
-      textColor: "#DD6B20",
-      link: "https://www.psychologytoday.com/us/blog/womens-mental-health-matters/201512/pcos-and-depression"
+      category: "Treatment",
+      readTime: "10 min read",
+      title: "PCOS: Causes, Current Treatments, and Emerging Therapies",
+      desc: "A comprehensive scientific review of the etiology of PCOS, current management strategies, and promising future therapeutic approaches based on recent clinical research.",
+      tagColor: "#FCE7F3",
+      textColor: "#D6689C",
+      link: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9964744/"
+    },
+    {
+      category: "Education",
+      readTime: "9 min read",
+      title: "PCOS in Adolescents: Pathophysiology, Symptoms, and Treatment",
+      desc: "An in-depth discussion of how Polycystic Ovary Syndrome presents in adolescent girls, with emphasis on hormonal mechanisms, clinical features, and treatment considerations.",
+      tagColor: "#FCE7F3",
+      textColor: "#D6689C",
+      link: "https://academic.oup.com/jes/article/3/8/1545/5518341"
     },
     {
       category: "Fertility",
-      readTime: "10 min read",
-      title: "Fertility and PCOS: What You Should Know",
-      desc: "Navigating fertility challenges with PCOS and understanding your options.",
-      tagColor: "#E9D8FD",
-      textColor: "#805AD5",
-      link: "https://www.mayoclinic.org/diseases-conditions/pcos/diagnosis-treatment/drc-20353443"
-    },
-    {
-      category: "Natural Remedies",
-      readTime: "7 min read",
-      title: "Natural Remedies for PCOS Symptoms",
-      desc: "Evidence-based natural approaches to managing common PCOS symptoms.",
-      tagColor: "#C6F6D5",
-      textColor: "#276749",
-      link: "https://www.medicalnewstoday.com/articles/322637"
+      readTime: "8 min read",
+      title: "How PCOS Affects Quality of Life in Women of Reproductive Age",
+      desc: "A case-control study examining the impact of PCOS and related factors on physical, emotional, and social well-being in women during their reproductive years.",
+      tagColor: "#FCE7F3",
+      textColor: "#D6689C",
+      link: "https://www.tandfonline.com/doi/full/10.1080/23293691.2023.2293968"
     }
   ];
 

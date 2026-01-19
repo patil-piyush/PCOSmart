@@ -41,7 +41,8 @@ const AboutPCOS = () => {
           <div>
             <h2 style={{ marginBottom: '15px', fontSize: '1.5rem' }}>What is PCOS?</h2>
             <p style={{ color: '#4A5568', lineHeight: '1.7' }}>
-              Polycystic Ovary Syndrome (PCOS) is a hormonal disorder common among women of reproductive age. Women with PCOS may have infrequent or prolonged menstrual periods or excess male hormone (androgen) levels. The ovaries may develop numerous small collections of fluid (follicles) and fail to regularly release eggs.
+              Polycystic Ovary Syndrome (PCOS) is a chronic hormonal and metabolic disorder that affects women during their reproductive years (typically ages 15–44). It is characterized by an imbalance of reproductive hormones, which can interfere with normal ovulation. As a result, the ovaries may not release eggs regularly and may contain multiple small, fluid-filled sacs called follicles (often mistakenly referred to as cysts).
+              PCOS is one of the leading causes of infertility, but it also affects overall health, including metabolism, mental well-being, and cardiovascular health. The condition varies widely—some women have severe symptoms, while others may have mild or no noticeable symptoms.
             </p>
           </div>
         </div>
@@ -56,7 +57,13 @@ const AboutPCOS = () => {
           <div>
             <h2 style={{ marginBottom: '15px', fontSize: '1.5rem' }}>Causes of PCOS</h2>
             <p style={{ color: '#4A5568', lineHeight: '1.7' }}>
-              The exact cause of PCOS isn't known. Factors that might play a role include excess insulin, low-grade inflammation, heredity, and excess androgen production. Early diagnosis and treatment along with weight loss may reduce the risk of long-term complications.
+              The exact cause of PCOS is not fully understood, but research suggests it results from a combination of genetic, hormonal, and environmental factors:<br></br>
+              1. Insulin resistance: Many women with PCOS have insulin resistance, meaning their bodies do not use insulin effectively. This leads to higher insulin levels, which stimulate the ovaries to produce excess androgens.<br></br>
+              2. Excess androgen production: Elevated levels of male hormones (such as testosterone) disrupt ovulation and cause symptoms like acne and excessive hair growth.<br></br>
+              3. Low-grade inflammation: Women with PCOS often have chronic low-level inflammation, which may trigger androgen production.<br></br>
+              4. Genetics: PCOS tends to run in families, suggesting a hereditary component.<br></br>
+              5. Lifestyle factors: Poor diet, physical inactivity, and weight gain can worsen symptoms, though PCOS can occur in women of all body types.<br></br>
+              Early diagnosis and management can significantly reduce the risk of long-term complications.
             </p>
           </div>
         </div>
