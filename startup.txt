@@ -17,6 +17,9 @@ npm install
 npm run dev
 
 
+
+
+
 frontend - 
 change the directory to frontend
 run commands one by one-

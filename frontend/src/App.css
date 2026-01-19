@@ -244,6 +244,63 @@ main { flex: 1; width: 100%; }
 .cta-box p { color: rgba(255, 255, 255, 0.9); max-width: 600px; margin: 0 auto 30px auto; font-size: 1.1rem; }
 
 /* ==========================================================================
+   5.1. 3D MODEL SECTION
+   ========================================================================== */
+.model-section {
+  padding: 80px 0;
+  background: radial-gradient(circle at center, #fff5f8 0%, #ffffff 100%);
+  border-top: 1px solid #eee;
+}
+
+.model-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 40px;
+}
+
+.model-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: var(--text-dark);
+}
+
+.model-text p {
+  color: var(--text-light);
+  font-size: 1.1rem;
+  max-width: 600px;
+}
+
+.model-viewer-container {
+  width: 100%;
+  max-width: 800px;
+  height: 500px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  overflow: hidden;
+  position: relative;
+  border: 4px solid white;
+}
+
+.three-canvas {
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: var(--primary);
+  z-index: 10;
+}
+
+/* ==========================================================================
    6. LOGIN & REGISTER PAGES
    ========================================================================== */
 .login-container, .split-screen {
@@ -582,4 +639,24 @@ main { flex: 1; width: 100%; }
   padding: 8px 15px;
   border-radius: 8px;
   cursor: pointer;
+}
+
+
+/* ==========================================================================
+   GLOBAL CURSOR SETTINGS
+   ========================================================================== */
+
+/* 1. Default Cursor (The Stethoscope) */
+body, html {
+  /* 
+     Syntax: url('path'), x-offset y-offset, fallback 
+     0 0 means the "click" happens at the top-left corner of the image.
+  */
+  cursor: url('/s.png'), 0 0, auto; 
+}
+
+/* 2. Cursor for Buttons and Links (Interactive Feel) */
+/* You can use the same icon, or a different one for hovering */
+a, button, .btn, .btn-primary, .step-box, .card {
+  cursor: url('/s.png'), pointer; 
 }

@@ -1,13 +1,20 @@
-import React from 'react';
-// FIX: Added 'useNavigate' to imports
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUpload, FaClipboardList, FaBrain, FaLeaf, FaArrowRight } from 'react-icons/fa';
-// FIX: Added missing slash in path
 import { useAuth } from '../context/AuthContext';
+
+// Import Three.js dependencies
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 const Home = () => {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
+  
+  // Ref for the 3D container
+  const mountRef = useRef(null);
+  const [loading, setLoading] = useState(true);
 
   // Logic: Go to test if logged in, else register
   const handleStartCheck = () => {
@@ -18,6 +25,97 @@ const Home = () => {
     }
   };
 
+  // --- Three.js Logic ---
+ // --- Three.js Logic ---
+  useEffect(() => {
+    const currentMount = mountRef.current;
+    
+    // 1. Scene Setup
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xfff5f8); // Matches your hero theme
+
+    // 2. Camera Setup
+    const camera = new THREE.PerspectiveCamera(75, currentMount.clientWidth / currentMount.clientHeight, 0.1, 1000);
+    // MOVED CAMERA CLOSER: Changed Z from 4 to 2.5
+    camera.position.set(0, 0, 2.5); 
+
+    // 3. Renderer Setup
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    currentMount.appendChild(renderer.domElement);
+
+    // 4. Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+    dirLight.position.set(5, 10, 7.5);
+    scene.add(dirLight);
+
+    // 5. Controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enableZoom = true; // Enabled zoom so you can adjust it yourself while testing
+    controls.autoRotate = true; // Optional: Makes it spin slowly which looks nice
+    controls.autoRotateSpeed = 2.0;
+
+    // 6. Load Model
+    const loader = new GLTFLoader();
+    
+    loader.load('/uterus 3d model.glb', (gltf) => {
+      const model = gltf.scene;
+      
+      // --- FIX: SCALE THE MODEL UP ---
+      // Try changing this number: 10, 20, or 50 until it fits perfectly.
+      // Based on your image, it likely needs to be 20x or 30x bigger.
+      const scaleFactor = 25; 
+      model.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+      // --- FIX: CENTER THE MODEL ---
+      // This calculates the bounding box and centers it perfectly
+      const box = new THREE.Box3().setFromObject(model);
+      const center = box.getCenter(new THREE.Vector3());
+      model.position.x -= center.x;
+      model.position.y -= center.y;
+      model.position.z -= center.z;
+      
+      scene.add(model);
+      setLoading(false);
+    }, undefined, (error) => {
+      console.error('An error happened loading the model:', error);
+      setLoading(false);
+    });
+
+    // 7. Animation Loop
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    // 8. Handle Resize
+    const handleResize = () => {
+      if (!currentMount) return;
+      camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationId);
+      if (currentMount && renderer.domElement) {
+        currentMount.removeChild(renderer.domElement);
+      }
+      renderer.dispose();
+    };
+  }, []);
+  
   return (
     <div>
       {/* 1. Hero Section */}
@@ -28,7 +126,6 @@ const Home = () => {
           <p>PCOSmart uses advanced AI to analyze ultrasound images and symptoms, providing personalized insights.</p>
           
           <div className="flex justify-center gap-20">
-            {/* BUTTON WITH LOGIC */}
             <button onClick={handleStartCheck} className="btn btn-primary">
               Start Your Check <FaArrowRight />
             </button>
@@ -111,6 +208,22 @@ const Home = () => {
             <button onClick={handleStartCheck} className="btn-assessment">
               Start Your Assessment <FaArrowRight />
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* NEW: 3D Model Section */}
+      <section className="model-section">
+        <div className="container">
+          <div className="model-content">
+            <div className="model-text">
+              <h2>Interactive Anatomy</h2>
+              <p>Explore the reproductive system in 3D to better understand how PCOS affects your body. Drag to rotate and visualize.</p>
+            </div>
+            <div className="model-viewer-container">
+               {loading && <div className="loading-overlay">Loading 3D Model...</div>}
+               <div ref={mountRef} className="three-canvas" />
+            </div>
           </div>
         </div>
       </section>
