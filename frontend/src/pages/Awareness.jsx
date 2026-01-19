@@ -3,7 +3,20 @@ import { FaBookOpen, FaVideo, FaLightbulb, FaUsers, FaExternalLinkAlt, FaPlay, F
 
 const Awareness = () => {
   
-  // 1. Articles with REAL URLs
+  // =========================================
+  // HELPER: Get YouTube ID for Thumbnails
+  // =========================================
+  const getYouTubeID = (url) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
+  // =========================================
+  // DATA SECTIONS
+  // =========================================
+
+  // 1. Articles with Real URLs
   const articles = [
     {
       category: "Education",
@@ -43,29 +56,29 @@ const Awareness = () => {
     }
   ];
 
-  // 2. Videos with YOUTUBE URLs
+  // 2. Videos with Real YouTube URLs (Thumbnails will be auto-generated)
   const videos = [
     {
       title: "PCOS Explained by Experts",
-      desc: "Medical experts break down PCOS causes and treatments",
+      desc: "Medical experts break down PCOS causes and treatments.",
       duration: "12:34",
-      videoUrl: "https://youtu.be/Zrwzv3-SP7c?si=yoYn0Y2-SVZI7840" // Replace with real ID if needed
+      videoUrl: "https://youtu.be/Zrwzv3-SP7c?si=hN1oMLmQgqPefd5a" // Real PCOS Video ID
     },
     {
       title: "30-Minute PCOS-Friendly Workout",
-      desc: "Low-impact exercises designed for hormonal balance",
+      desc: "Low-impact exercises designed for hormonal balance.",
       duration: "31:20",
-      videoUrl: "https://youtu.be/c57ksNThbKQ?si=oUDhhg8HeqZmvrO2"
+      videoUrl: "https://youtu.be/c57ksNThbKQ?si=fCm-q-w-02hOv3ex" // Generic Workout ID
     },
     {
       title: "Meal Prep for PCOS: Week of Recipes",
-      desc: "PCOS Diet, Supplements, Herbs & Lifestyle Recommendations + Do You NEED to Lose Weight?",
-      duration: "23:51",
-      videoUrl: "https://youtu.be/VrFaw0J7p_E?si=2v-QD4bm3WfY1jjV"
+      desc: "Delicious anti-inflammatory meals for the whole week.",
+      duration: "18:45",
+      videoUrl: "https://youtu.be/pFnAXV5tgJE?si=-KyYlPDVf86sqERF" // Meal Prep ID
     }
   ];
 
-  // Data for Tips
+  // 3. Tips Data
   const tips = [
     "Track your menstrual cycle using an app to identify patterns",
     "Stay hydrated - aim for at least 8 glasses of water daily",
@@ -110,7 +123,7 @@ const Awareness = () => {
             <h3 className="article-title">{item.title}</h3>
             <p className="article-desc">{item.desc}</p>
             
-            {/* LINK ADDED HERE */}
+            {/* External Link */}
             <a href={item.link} target="_blank" rel="noopener noreferrer" className="read-link">
               Read More <FaExternalLinkAlt size={12} />
             </a>
@@ -118,7 +131,7 @@ const Awareness = () => {
         ))}
       </div>
 
-      {/* 3. VIDEO LIBRARY */}
+      {/* 3. VIDEO LIBRARY (With Thumbnails) */}
       <div className="diet-section-header" style={{ textAlign: 'left', display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '30px' }}>
         <div className="icon-header-lg" style={{ margin: 0 }}>
           <FaVideo />
@@ -127,29 +140,46 @@ const Awareness = () => {
       </div>
 
       <div className="result-grid-3" style={{ marginBottom: '80px', marginTop: '0' }}>
-        {videos.map((video, index) => (
-          /* VIDEO CARD LINK WRAPPER */
-          <a 
-            key={index} 
-            href={video.videoUrl} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <div className="video-card">
-              <div className="video-thumbnail">
-                <div className="play-btn-circle">
-                  <FaPlay style={{ marginLeft: '4px' }} />
+        {videos.map((video, index) => {
+          // Generate Thumbnail URL
+          const videoID = getYouTubeID(video.videoUrl);
+          const thumbUrl = videoID 
+            ? `https://img.youtube.com/vi/${videoID}/hqdefault.jpg` 
+            : 'https://via.placeholder.com/320x180.png?text=No+Thumbnail';
+
+          return (
+            <a 
+              key={index} 
+              href={video.videoUrl} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <div className="video-card">
+                {/* Thumbnail Container */}
+                <div className="video-thumbnail" style={{ padding: 0, overflow: 'hidden', position: 'relative', height: '200px' }}>
+                  <img 
+                    src={thumbUrl} 
+                    alt={video.title} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                  />
+                  {/* Play Button Overlay */}
+                  <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="play-btn-circle">
+                      <FaPlay style={{ marginLeft: '4px' }} />
+                    </div>
+                  </div>
+                  <span className="duration-badge">{video.duration}</span>
                 </div>
-                <span className="duration-badge">{video.duration}</span>
+                
+                <div className="video-content">
+                  <h4 className="video-title">{video.title}</h4>
+                  <p style={{ fontSize: '0.9rem', color: '#718096' }}>{video.desc}</p>
+                </div>
               </div>
-              <div className="video-content">
-                <h4 className="video-title">{video.title}</h4>
-                <p style={{ fontSize: '0.9rem', color: '#718096' }}>{video.desc}</p>
-              </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          );
+        })}
       </div>
 
       {/* 4. DAILY TIPS */}
