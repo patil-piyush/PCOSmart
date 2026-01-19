@@ -3,62 +3,82 @@ import { FaBookOpen, FaVideo, FaLightbulb, FaUsers, FaExternalLinkAlt, FaPlay, F
 
 const Awareness = () => {
   
-  // Data for Articles
+  // =========================================
+  // HELPER: Get YouTube ID for Thumbnails
+  // =========================================
+  const getYouTubeID = (url) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
+  // =========================================
+  // DATA SECTIONS
+  // =========================================
+
+  // 1. Articles with Real URLs
   const articles = [
     {
       category: "Education",
-      readTime: "8 min read",
-      title: "Understanding PCOS: A Complete Guide",
-      desc: "Everything you need to know about Polycystic Ovary Syndrome, from diagnosis to treatment options.",
+      readTime: "7 min read",
+      title: "Polycystic Ovary Syndrome (PCOS): Key Facts and Overview",
+      desc: "An evidence-based overview of Polycystic Ovary Syndrome, covering symptoms, causes, diagnosis, and global health impact as outlined by the World Health Organization.",
       tagColor: "#FCE7F3",
-      textColor: "#D6689C"
+      textColor: "#D6689C",
+      link: "https://www.who.int/news-room/fact-sheets/detail/polycystic-ovary-syndrome"
     },
     {
-      category: "Mental Health",
-      readTime: "6 min read",
-      title: "PCOS and Mental Health: Breaking the Stigma",
-      desc: "Exploring the psychological impact of PCOS and strategies for emotional well-being.",
-      tagColor: "#FEEBC8",
-      textColor: "#DD6B20"
+      category: "Treatment",
+      readTime: "10 min read",
+      title: "PCOS: Causes, Current Treatments, and Emerging Therapies",
+      desc: "A comprehensive scientific review of the etiology of PCOS, current management strategies, and promising future therapeutic approaches based on recent clinical research.",
+      tagColor: "#FCE7F3",
+      textColor: "#D6689C",
+      link: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9964744/"
+    },
+    {
+      category: "Education",
+      readTime: "9 min read",
+      title: "PCOS in Adolescents: Pathophysiology, Symptoms, and Treatment",
+      desc: "An in-depth discussion of how Polycystic Ovary Syndrome presents in adolescent girls, with emphasis on hormonal mechanisms, clinical features, and treatment considerations.",
+      tagColor: "#FCE7F3",
+      textColor: "#D6689C",
+      link: "https://academic.oup.com/jes/article/3/8/1545/5518341"
     },
     {
       category: "Fertility",
-      readTime: "10 min read",
-      title: "Fertility and PCOS: What You Should Know",
-      desc: "Navigating fertility challenges with PCOS and understanding your options.",
-      tagColor: "#E9D8FD",
-      textColor: "#805AD5"
-    },
-    {
-      category: "Natural Remedies",
-      readTime: "7 min read",
-      title: "Natural Remedies for PCOS Symptoms",
-      desc: "Evidence-based natural approaches to managing common PCOS symptoms.",
-      tagColor: "#C6F6D5",
-      textColor: "#276749"
+      readTime: "8 min read",
+      title: "How PCOS Affects Quality of Life in Women of Reproductive Age",
+      desc: "A case-control study examining the impact of PCOS and related factors on physical, emotional, and social well-being in women during their reproductive years.",
+      tagColor: "#FCE7F3",
+      textColor: "#D6689C",
+      link: "https://www.tandfonline.com/doi/full/10.1080/23293691.2023.2293968"
     }
   ];
 
-  // Data for Videos
+  // 2. Videos with Real YouTube URLs (Thumbnails will be auto-generated)
   const videos = [
     {
       title: "PCOS Explained by Experts",
-      desc: "Medical experts break down PCOS causes and treatments",
-      duration: "12:34"
+      desc: "Medical experts break down PCOS causes and treatments.",
+      duration: "12:34",
+      videoUrl: "https://youtu.be/Zrwzv3-SP7c?si=hN1oMLmQgqPefd5a" // Real PCOS Video ID
     },
     {
       title: "30-Minute PCOS-Friendly Workout",
-      desc: "Low-impact exercises designed for hormonal balance",
-      duration: "31:20"
+      desc: "Low-impact exercises designed for hormonal balance.",
+      duration: "31:20",
+      videoUrl: "https://youtu.be/c57ksNThbKQ?si=fCm-q-w-02hOv3ex" // Generic Workout ID
     },
     {
       title: "Meal Prep for PCOS: Week of Recipes",
-      desc: "Delicious anti-inflammatory meals for the whole week",
-      duration: "18:45"
+      desc: "Delicious anti-inflammatory meals for the whole week.",
+      duration: "18:45",
+      videoUrl: "https://youtu.be/pFnAXV5tgJE?si=-KyYlPDVf86sqERF" // Meal Prep ID
     }
   ];
 
-  // Data for Tips
+  // 3. Tips Data
   const tips = [
     "Track your menstrual cycle using an app to identify patterns",
     "Stay hydrated - aim for at least 8 glasses of water daily",
@@ -102,12 +122,16 @@ const Awareness = () => {
             </div>
             <h3 className="article-title">{item.title}</h3>
             <p className="article-desc">{item.desc}</p>
-            <a href="#" className="read-link">Read More <FaExternalLinkAlt size={12} /></a>
+            
+            {/* External Link */}
+            <a href={item.link} target="_blank" rel="noopener noreferrer" className="read-link">
+              Read More <FaExternalLinkAlt size={12} />
+            </a>
           </div>
         ))}
       </div>
 
-      {/* 3. VIDEO LIBRARY */}
+      {/* 3. VIDEO LIBRARY (With Thumbnails) */}
       <div className="diet-section-header" style={{ textAlign: 'left', display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '30px' }}>
         <div className="icon-header-lg" style={{ margin: 0 }}>
           <FaVideo />
@@ -116,20 +140,46 @@ const Awareness = () => {
       </div>
 
       <div className="result-grid-3" style={{ marginBottom: '80px', marginTop: '0' }}>
-        {videos.map((video, index) => (
-          <div key={index} className="video-card">
-            <div className="video-thumbnail">
-              <div className="play-btn-circle">
-                <FaPlay style={{ marginLeft: '4px' }} />
+        {videos.map((video, index) => {
+          // Generate Thumbnail URL
+          const videoID = getYouTubeID(video.videoUrl);
+          const thumbUrl = videoID 
+            ? `https://img.youtube.com/vi/${videoID}/hqdefault.jpg` 
+            : 'https://via.placeholder.com/320x180.png?text=No+Thumbnail';
+
+          return (
+            <a 
+              key={index} 
+              href={video.videoUrl} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <div className="video-card">
+                {/* Thumbnail Container */}
+                <div className="video-thumbnail" style={{ padding: 0, overflow: 'hidden', position: 'relative', height: '200px' }}>
+                  <img 
+                    src={thumbUrl} 
+                    alt={video.title} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                  />
+                  {/* Play Button Overlay */}
+                  <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="play-btn-circle">
+                      <FaPlay style={{ marginLeft: '4px' }} />
+                    </div>
+                  </div>
+                  <span className="duration-badge">{video.duration}</span>
+                </div>
+                
+                <div className="video-content">
+                  <h4 className="video-title">{video.title}</h4>
+                  <p style={{ fontSize: '0.9rem', color: '#718096' }}>{video.desc}</p>
+                </div>
               </div>
-              <span className="duration-badge">{video.duration}</span>
-            </div>
-            <div className="video-content">
-              <h4 className="video-title">{video.title}</h4>
-              <p style={{ fontSize: '0.9rem', color: '#718096' }}>{video.desc}</p>
-            </div>
-          </div>
-        ))}
+            </a>
+          );
+        })}
       </div>
 
       {/* 4. DAILY TIPS */}
@@ -159,8 +209,6 @@ const Awareness = () => {
       </div>
 
       <div className="stories-grid">
-        
-        {/* Story 1 */}
         <div className="story-card">
           <div className="story-header">
             <div className="story-avatar" style={{ background: '#D6689C' }}>S</div>
@@ -177,7 +225,6 @@ const Awareness = () => {
           </div>
         </div>
 
-        {/* Story 2 */}
         <div className="story-card">
           <div className="story-header">
             <div className="story-avatar" style={{ background: '#9F7AEA' }}>P</div>
@@ -194,7 +241,6 @@ const Awareness = () => {
           </div>
         </div>
 
-        {/* Story 3 */}
         <div className="story-card">
           <div className="story-header">
             <div className="story-avatar" style={{ background: '#DD6B20' }}>E</div>
@@ -210,7 +256,6 @@ const Awareness = () => {
             <FaHeart size={12} /> Founded a local PCOS support group
           </div>
         </div>
-
       </div>
 
     </div>

@@ -16,7 +16,7 @@ const Contact = () => {
           Reach out and we'll respond as soon as we can.
         </p>
       </div>
-
+      <br></br> 
       <div className="contact-grid">
         
         {/* 2. LEFT COLUMN: FORM */}
@@ -93,21 +93,6 @@ const Contact = () => {
                 <span className="info-label">Website</span>
                 <span className="info-value">www.pcosmart.com</span>
               </div>
-            </div>
-          </div>
-
-          {/* Location Card */}
-          <div className="location-card">
-            <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '1.2rem', color: '#2D3748', marginBottom: '15px' }}>
-              <FaMapPin style={{ color: '#D6689C' }} /> Our Location
-            </h3>
-            <p style={{ color: '#718096', fontSize: '0.9rem', lineHeight: '1.6' }}>
-              123 Health Plaza<br />
-              Medical District<br />
-              Pune,  90210
-            </p>
-            <div className="map-placeholder">
-              Interactive Map
             </div>
           </div>
 
