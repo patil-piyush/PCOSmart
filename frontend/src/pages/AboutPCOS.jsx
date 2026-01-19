@@ -58,11 +58,11 @@ const AboutPCOS = () => {
             <h2 style={{ marginBottom: '15px', fontSize: '1.5rem' }}>Causes of PCOS</h2>
             <p style={{ color: '#4A5568', lineHeight: '1.7' }}>
               The exact cause of PCOS is not fully understood, but research suggests it results from a combination of genetic, hormonal, and environmental factors:<br></br>
-              1. Insulin resistance: Many women with PCOS have insulin resistance, meaning their bodies do not use insulin effectively. This leads to higher insulin levels, which stimulate the ovaries to produce excess androgens.<br></br>
-              2. Excess androgen production: Elevated levels of male hormones (such as testosterone) disrupt ovulation and cause symptoms like acne and excessive hair growth.<br></br>
-              3. Low-grade inflammation: Women with PCOS often have chronic low-level inflammation, which may trigger androgen production.<br></br>
-              4. Genetics: PCOS tends to run in families, suggesting a hereditary component.<br></br>
-              5. Lifestyle factors: Poor diet, physical inactivity, and weight gain can worsen symptoms, though PCOS can occur in women of all body types.<br></br>
+              <b>1. Insulin resistance:</b> Many women with PCOS have insulin resistance, meaning their bodies do not use insulin effectively. This leads to higher insulin levels, which stimulate the ovaries to produce excess androgens.<br></br>
+              <b>2. Excess androgen production:</b> Elevated levels of male hormones (such as testosterone) disrupt ovulation and cause symptoms like acne and excessive hair growth.<br></br>
+              <b>3. Low-grade inflammation:</b> Women with PCOS often have chronic low-level inflammation, which may trigger androgen production.<br></br>
+              <b>4. Genetics:</b> PCOS tends to run in families, suggesting a hereditary component.<br></br>
+              <b>5. Lifestyle factors:</b> Poor diet, physical inactivity, and weight gain can worsen symptoms, though PCOS can occur in women of all body types.<br></br>
               Early diagnosis and management can significantly reduce the risk of long-term complications.
             </p>
           </div>
@@ -79,13 +79,13 @@ const AboutPCOS = () => {
             <h2 style={{ marginBottom: '20px', fontSize: '1.5rem' }}>Common Symptoms</h2>
             <div className="check-list-vertical">
               {[
-                "Irregular periods or no periods at all",
-                "Difficulty getting pregnant (infertility)",
-                "Excessive hair growth (hirsutism)",
-                "Weight gain",
-                "Thinning hair and hair loss from the head",
-                "Oily skin or acne",
-                "Darkening of skin in certain areas"
+                "Irregular menstrual cycles: Infrequent, prolonged, or absent periods due to lack of regular ovulation",
+                "Infertility: Difficulty conceiving because ovulation may not occur consistently",
+                "Hirsutism: Excess hair growth on the face, chest, abdomen, or back",
+                "Weight gain: Especially around the abdomen, linked to insulin resistance",
+                "Hair thinning or hair loss: Male-pattern hair thinning on the scalp",
+                "Acne and oily skin: Caused by increased androgen levels",
+                "Skin darkening (acanthosis nigricans): Dark, thickened patches of skin, commonly on the neck, underarms, or groin"
               ].map((item, index) => (
                 <div key={index} className="check-item-red">
                   <FaCheckCircle className="icon-circle-outline" />
@@ -107,13 +107,13 @@ const AboutPCOS = () => {
             <h2 style={{ marginBottom: '20px', fontSize: '1.5rem' }}>Health Risks</h2>
             <div className="check-list-vertical">
               {[
-                "Type 2 diabetes",
-                "High blood pressure",
-                "High cholesterol",
-                "Heart disease",
-                "Endometrial cancer",
-                "Depression and anxiety",
-                "Sleep apnea"
+                "Type 2 diabetes or prediabetes: Due to insulin resistance",
+                "High blood pressure (hypertension): Raises cardiovascular risk",
+                "Abnormal cholesterol levels: Increased LDL (“bad”) cholesterol and decreased HDL (“good”) cholesterol",
+                "Heart disease and stroke: Higher long-term cardiovascular risk",
+                "Endometrial cancer: Irregular or absent periods can cause thickening of the uterine lining",
+                "Mental health disorders: Increased risk of depression, anxiety, and eating disorders",
+                "Sleep apnea: Particularly in women who are overweight or obese"
               ].map((item, index) => (
                 <div key={index} className="check-item-red">
                   <FaCheckCircle className="icon-circle-outline" />
@@ -134,7 +134,7 @@ const AboutPCOS = () => {
           <div>
             <h2 style={{ marginBottom: '15px', fontSize: '1.5rem' }}>Treatment Options</h2>
             <p style={{ color: '#4A5568', lineHeight: '1.7', marginBottom: '20px' }}>
-              Treatment for PCOS focuses on managing individual concerns, such as infertility, hirsutism, acne, or obesity. Specific treatment might involve lifestyle changes or medication.
+              There is no cure for PCOS, but treatments are highly effective at managing symptoms and preventing complications. Treatment plans are individualized based on symptoms and reproductive goals.
             </p>
             <div className="check-list-vertical">
               {[

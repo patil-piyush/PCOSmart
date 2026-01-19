@@ -15,7 +15,7 @@ import torch.nn.functional as F
 from torchvision import models, transforms
 from PIL import Image
 import io
-from fastapi import UploadFile, File, HTTPException
+from fastapi import UploadFile, File, HTTPException, Form
 
 load_dotenv()
 
@@ -49,6 +49,73 @@ simple_explainer = None
 clinical_explainer = None
 simple_feature_names = None
 clinical_feature_names = None
+
+fusion_model = None
+fusion_scaler = None
+fusion_transform = None
+FUSION_DEVICE = "cpu"
+
+FUSION_FEATURE_KEYS = [
+  "age_yrs",
+  "weight_kg",
+  "height_cm",
+  "bmi",
+  "pulse_rate_bpm",
+  "hb_g_dl",
+  "cycle_length_days",
+  "fsh_miu_ml",
+  "lh_miu_ml",
+  "fsh_lh",
+  "hip_inch",
+  "waist_inch",
+  "tsh_miu_l",
+  "amh_ng_ml",
+  "prl_ng_ml",
+  "vit_d3_ng_ml",
+  "follicle_no_l",
+  "follicle_no_r",
+  "endometrium_mm",
+]
+
+
+class LateFusionModel(nn.Module):
+    def __init__(self, num_clinical_features: int):
+        super().__init__()
+
+        self.resnet = models.resnet18(weights=None)
+        self.resnet.fc = nn.Identity()  # output 512
+
+        self.clinical_net = nn.Sequential(
+            nn.Linear(num_clinical_features, 32),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(32, 16),
+            nn.ReLU(),
+        )
+
+        self.fusion_net = nn.Sequential(
+            nn.Linear(512 + 16, 64),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(64, 2),
+        )
+
+    def forward(self, image, clinical_data):
+        x_image = self.resnet(image)
+        x_clinical = self.clinical_net(clinical_data)
+        combined = torch.cat((x_image, x_clinical), dim=1)
+        return self.fusion_net(combined)
+    
+
+
+def build_fusion_transform():
+    return transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406],
+                             [0.229, 0.224, 0.225]),
+    ])
+
 
 # ---- Helpers ----
 def risk_level(p: float) -> str:
@@ -219,6 +286,35 @@ def startup():
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
     ])
 
+    global fusion_model, fusion_scaler, fusion_transform
+
+    fusion_transform = build_fusion_transform()
+
+    fusion_path = os.path.join(ART_DIR, "pcos_fusion_model.pt")
+    scaler_path = os.path.join(ART_DIR, "fusion_scaler.joblib")
+
+    if not os.path.exists(fusion_path):
+        raise RuntimeError(f"pcos_fusion_model.pt not found: {fusion_path}")
+    if not os.path.exists(scaler_path):
+        raise RuntimeError(f"fusion_scaler.joblib not found: {scaler_path}")
+
+    fusion_scaler = load(scaler_path)
+
+    fusion_model = LateFusionModel(num_clinical_features=len(FUSION_FEATURE_KEYS)).to(FUSION_DEVICE)
+    state = torch.load(fusion_path, map_location=FUSION_DEVICE)
+    fusion_model.load_state_dict(state)
+    fusion_model.eval()
+
+
+def risk_level(p: float) -> str:
+    if p < 0.33:
+        return "Low"
+    elif p < 0.66:
+        return "Medium"
+    return "High"
+
+
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
@@ -274,6 +370,64 @@ async def predict_image(image: UploadFile = File(...)):
         p_pcos = float(probs[0, 1].item())     # index 1 = PCOS (must match training)
 
     narration = gemini_narration_image(p_pcos)
+
+    return {
+        "probability": p_pcos,
+        "risk_level": risk_level(p_pcos),
+        "top_factors": [],
+        "narration": narration,
+    }
+
+
+@app.post("/predict/combined")
+async def predict_combined(
+    image: UploadFile = File(...),
+    clinical: str = Form(...),
+):
+    if fusion_model is None or fusion_scaler is None or fusion_transform is None:
+        raise HTTPException(status_code=500, detail="Fusion model not loaded")
+
+    if not image.content_type or not image.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="Only image files are allowed")
+
+    # parse clinical JSON
+    try:
+        payload = json.loads(clinical)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid clinical JSON")
+
+    # build vector in correct order
+    vec = []
+    for k in FUSION_FEATURE_KEYS:
+        if k not in payload:
+            raise HTTPException(status_code=400, detail=f"Missing clinical field: {k}")
+        try:
+            vec.append(float(payload[k]))
+        except Exception:
+            raise HTTPException(status_code=400, detail=f"Invalid clinical value for: {k}")
+
+    # scale clinical inputs
+    vec_np = np.array([vec], dtype=np.float32)
+    vec_scaled = fusion_scaler.transform(vec_np)
+    clin_t = torch.tensor(vec_scaled, dtype=torch.float32).to(FUSION_DEVICE)
+
+    # preprocess image
+    contents = await image.read()
+    try:
+        pil_img = Image.open(io.BytesIO(contents)).convert("RGB")
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid image file")
+
+    img_t = fusion_transform(pil_img).unsqueeze(0).to(FUSION_DEVICE)
+
+    # predict
+    with torch.no_grad():
+        logits = fusion_model(img_t, clin_t)
+        probs = F.softmax(logits, dim=1)
+        p_pcos = float(probs[0, 1].item())
+
+    # narration (optional)
+    narration = f"This combined screening estimate suggests a {risk_level(p_pcos)} risk based on image + clinical inputs."
 
     return {
         "probability": p_pcos,
