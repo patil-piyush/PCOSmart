@@ -3,6 +3,7 @@ const cloudinary = require("../config/cloudinary");
 const SimpleDataTest = require("../models/SimpleDataTest");
 const ClinicalDataTest = require("../models/ClinicalDataTest");
 const ImageTest = require("../models/ImageDataTest");
+const CombinedDataTest = require("../models/CombinedDataTest");
 const FormData = require("form-data");
 const { generatePredictionPdfBuffer } = require("./pdfGenerator");
 const ML_SERVICE_URL = process.env.ML_SERVICE_URL;
@@ -498,8 +499,136 @@ const sendImageToImageModel = async (req, res) => {
 };
 
 
+
+
+const REQUIRED_COMBINED_KEYS = [
+  "age_yrs",
+  "weight_kg",
+  "height_cm",
+  "bmi",
+  "pulse_rate_bpm",
+  "hb_g_dl",
+  "cycle_length_days",
+  "fsh_miu_ml",
+  "lh_miu_ml",
+  "fsh_lh",
+  "hip_inch",
+  "waist_inch",
+  "tsh_miu_l",
+  "amh_ng_ml",
+  "prl_ng_ml",
+  "vit_d3_ng_ml",
+  "follicle_no_l",
+  "follicle_no_r",
+  "endometrium_mm",
+];
+
+const sendDataToCombinedModel = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "Image file is required (field name: image)" });
+    }
+    if (!ML_SERVICE_URL) {
+      return res.status(500).json({ message: "ML_SERVICE_URL not set in environment" });
+    }
+
+    // clinical comes from multipart field "clinical" as a JSON string
+    let clinical = {};
+    try {
+      clinical = JSON.parse(req.body.clinical || "{}");
+    } catch {
+      return res.status(400).json({ message: "Invalid clinical JSON" });
+    }
+
+    // Validate required fields
+    for (const k of REQUIRED_COMBINED_KEYS) {
+      if (clinical[k] === undefined || clinical[k] === null || clinical[k] === "") {
+        return res.status(400).json({ message: `Missing required clinical field: ${k}` });
+      }
+      const num = Number(clinical[k]);
+      if (!Number.isFinite(num)) {
+        return res.status(400).json({ message: `Invalid clinical value for: ${k}` });
+      }
+      clinical[k] = num; // normalize to number
+    }
+
+    // 1) Upload original image to Cloudinary
+    const uploaded = await uploadBufferToCloudinary(req.file.buffer, {
+      folder: "pcosmart/combined",
+    });
+
+    // 2) Call ML service /predict/combined (multipart: image + clinical)
+    const form = new FormData();
+    form.append("image", req.file.buffer, {
+      filename: req.file.originalname,
+      contentType: req.file.mimetype,
+    });
+    form.append("clinical", JSON.stringify(clinical));
+
+    const mlResponse = await axios.post(`${ML_SERVICE_URL}/predict/combined`, form, {
+      headers: form.getHeaders(),
+      timeout: 30000,
+    });
+
+    // 3) Save to Mongo
+    const saved = await CombinedDataTest.create({
+      userId: req.user?._id,
+
+      imageUrl: uploaded.secure_url,
+      imagePublicId: uploaded.public_id,
+      originalName: req.file.originalname,
+      mimeType: req.file.mimetype,
+      size: req.file.size,
+
+      clinical,
+      modelOutput: mlResponse.data,
+    });
+
+    // 4) Generate PDF report right now (same pattern as your other models)
+    let report = null;
+    try {
+      const pdfBuffer = await generatePredictionPdfBuffer({
+        inputMode: "combined",
+        submissionId: saved._id.toString(),
+        mlResult: mlResponse.data,
+        imageUrl: saved.imageUrl,
+        inputSnapshot: {
+          ...clinical,
+          imageUrl: saved.imageUrl,
+        },
+      });
+
+      report = {
+        filename: `PCOSmart_combined_${saved._id}.pdf`,
+        mimeType: "application/pdf",
+        base64: pdfBuffer.toString("base64"),
+      };
+    } catch (e) {
+      console.error("PDF generation failed (combined):", e.message);
+    }
+
+    // 5) Return to frontend
+    return res.status(200).json({
+      message: "Prediction completed",
+      submissionId: saved._id,
+      inputMode: "combined",
+      imageUrl: saved.imageUrl,
+      mlResult: mlResponse.data,
+      report,
+    });
+  } catch (err) {
+    console.error("sendDataToCombinedModel error:", err?.response?.data || err.message);
+    return res.status(500).json({
+      message: "Failed to process combined model request",
+      error: err?.response?.data || err.message,
+    });
+  }
+};
+
+
 module.exports = {
   sendDataToSimpleTextModel,
   sendDataToClinicalTextModel,
-  sendImageToImageModel
+  sendImageToImageModel,
+  sendDataToCombinedModel,
 };
