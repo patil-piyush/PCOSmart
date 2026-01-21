@@ -1050,3 +1050,32 @@ a, button, .btn, .btn-primary, .step-box, .card {
     overflow: hidden;
   }
 }
+
+/* =========================================
+   ADD TO App.css
+   ========================================= */
+
+/* 1. Ayurveda Image Animation */
+/* This makes the banner image zoom in slightly when you hover the card */
+.card img {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+/* 2. Card Container Safety */
+/* Ensures the zoomed image doesn't overflow the rounded corners */
+.card {
+  overflow: hidden; 
+  /* (Existing .card styles should remain, just ensure overflow is hidden) */
+}
+
+/* 3. Mobile Adjustments */
+/* Makes the header images slightly shorter on mobile to save screen space */
+@media (max-width: 768px) {
+  .card div[style*="height: 200px"] {
+    height: 150px !important;
+  }
+}

@@ -204,50 +204,103 @@ const DietExercise = () => {
       <div className="diet-section-header fade-in" style={{ marginTop: '80px' }}>
         <div className="icon-header-lg" style={{ background: '#FFEDD5', color: '#DD6B20' }}><FaMortarPestle /></div>
         <h2 style={{ fontSize: '2rem' }}>Ayurvedic <span style={{ color: '#DD6B20' }}>Wisdom</span></h2>
+        <p style={{ color: '#718096', marginTop: '10px' }}>Ancient practices for modern balance</p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8 fade-in-up" style={{ marginTop: '30px' }}>
-        {/* Rituals */}
-        <div className="card">
-          <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <FaFire style={{ color: '#DD6B20' }} /> Daily Rituals
-          </h3>
-          <div className="dropdown-list">
-            {ayurvedaRituals.map((item, idx) => (
-              <div key={idx} className="dropdown-item" onClick={() => toggleDropdown('ritual', idx)}>
-                <div className="dropdown-header">
-                  <span className="dot-indicator dot-orange">{item.title}</span>
-                  {openDropdowns[`ritual-${idx}`] ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
+      {/* PARENT CONTAINER: Uses Flexbox to force side-by-side layout */}
+      <div className="fade-in-up" style={{ 
+        display: 'flex', 
+        flexDirection: 'row', 
+        flexWrap: 'wrap', 
+        gap: '30px', 
+        marginTop: '30px', 
+        justifyContent: 'center' 
+      }}>
+        
+        {/* Rituals Card */}
+        <div className="card" style={{ 
+            padding: 0, 
+            overflow: 'hidden', 
+            border: '1px solid #FFEDD5', 
+            background: '#FFFaf0',
+            flex: '1',              /* Makes it share width equally */
+            minWidth: '300px',      /* Prevents it from getting too small */
+            maxWidth: '500px'       /* Prevents it from getting too big */
+          }}>
+          
+          <div style={{ height: '150px', overflow: 'hidden', position: 'relative' }}>
+            <img 
+              src="https://www.hopkinsmedicine.org/-/media/images/health/3_-wellness/integrative-medicine/ayurveda-hero.jpg?h=500&iar=0&mh=500&mw=1300&w=1297&hash=DD0B0188ECBAD543471211F37C1A2B38" 
+              alt="Ayurveda Morning Ritual" 
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+            />
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.1))' }}></div>
+          </div>
+
+          <div style={{ padding: '20px' }}>
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px', color: '#C05621', fontSize: '1.25rem' }}>
+              <FaFire style={{ color: '#DD6B20' }} /> Daily Rituals
+            </h3>
+            
+            <div className="dropdown-list">
+              {ayurvedaRituals.map((item, idx) => (
+                <div key={idx} className="dropdown-item" onClick={() => toggleDropdown('ritual', idx)} style={{ background: 'white' }}>
+                  <div className="dropdown-header">
+                    <span className="dot-indicator dot-orange">{item.title}</span>
+                    {openDropdowns[`ritual-${idx}`] ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
+                  </div>
+                  <div className={`dropdown-content ${openDropdowns[`ritual-${idx}`] ? 'open' : ''}`}>
+                    <p>{item.desc}</p>
+                  </div>
                 </div>
-                <div className={`dropdown-content ${openDropdowns[`ritual-${idx}`] ? 'open' : ''}`}>
-                  <p>{item.desc}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Herbs */}
-        <div className="card">
-          <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <FaLeaf style={{ color: '#38A169' }} /> Beneficial Herbs
-          </h3>
-          <div className="dropdown-list">
-            {ayurvedaHerbs.map((item, idx) => (
-              <div key={idx} className="dropdown-item" onClick={() => toggleDropdown('herb', idx)}>
-                <div className="dropdown-header">
-                  <span className="dot-indicator dot-green">{item.title}</span>
-                  {openDropdowns[`herb-${idx}`] ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
+        {/* Herbs Card */}
+        <div className="card" style={{ 
+            padding: 0, 
+            overflow: 'hidden', 
+            border: '1px solid #C6F6D5', 
+            background: '#F0FFF4',
+            flex: '1',              /* Makes it share width equally */
+            minWidth: '300px',      /* Prevents it from getting too small */
+            maxWidth: '500px'       /* Prevents it from getting too big */
+          }}>
+          
+          <div style={{ height: '150px', overflow: 'hidden', position: 'relative' }}>
+            <img 
+              src="https://ayurhealing.net/wp-content/uploads/2018/02/Benefits-of-Ayurveda-Treatment-Dr.-Mini-Nair-AyurHealing-Hospital.jpg" 
+              alt="Ayurvedic Herbs" 
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+            />
+             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.1))' }}></div>
+          </div>
+
+          <div style={{ padding: '20px' }}>
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px', color: '#2F855A', fontSize: '1.25rem' }}>
+              <FaLeaf style={{ color: '#38A169' }} /> Healing Herbs
+            </h3>
+            
+            <div className="dropdown-list">
+              {ayurvedaHerbs.map((item, idx) => (
+                <div key={idx} className="dropdown-item" onClick={() => toggleDropdown('herb', idx)} style={{ background: 'white' }}>
+                  <div className="dropdown-header">
+                    <span className="dot-indicator dot-green">{item.title}</span>
+                    {openDropdowns[`herb-${idx}`] ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
+                  </div>
+                  <div className={`dropdown-content ${openDropdowns[`herb-${idx}`] ? 'open' : ''}`}>
+                    <p>{item.desc}</p>
+                  </div>
                 </div>
-                <div className={`dropdown-content ${openDropdowns[`herb-${idx}`] ? 'open' : ''}`}>
-                  <p>{item.desc}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
+      </div>
+      
       {/* 3. EXERCISE SLIDESHOW */}
       <div className="diet-section-header fade-in" style={{ marginTop: '80px' }}>
         <div className="icon-header-lg"><FaDumbbell /></div>
