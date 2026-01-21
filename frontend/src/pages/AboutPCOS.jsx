@@ -46,7 +46,7 @@ const AboutPCOS = () => {
             </p>
           </div>
           <img 
-            src="https://th.bing.com/th/id/OIP.0196f4iDyc56ZMyy7ftFNAHaEI?w=276&h=180&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3" 
+            src="https://defensetalks.com/wp-content/uploads/2021/10/questioning-woman.jpg" 
             alt="Ovarian follicles illustration" 
             className="info-card-image"
           />
@@ -57,7 +57,7 @@ const AboutPCOS = () => {
       <div className="info-card">
         <div className="info-card-grid">
           <img 
-            src="https://assets-global.website-files.com/5ee7039040ea6efb80d7521c/603380b3103660d925e93bd7_Women-consulting-doctor.JPEG" 
+            src="https://southendfertilityclinic.com.ng/wp-content/uploads/2018/01/PCOS.png" 
             alt="Doctor consultation" 
             className="info-card-image"
             style={{ order: window.innerWidth < 900 ? -1 : 0 }} 

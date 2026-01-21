@@ -707,17 +707,136 @@ main { flex: 1; width: 100%; }
 /* ==========================================================================
    10. AWARENESS & FAQ
    ========================================================================== */
-.awareness-hero-text { font-size: 1.1rem; color: #718096; max-width: 700px; margin: 0 auto; }
+/* ==========================================================================
+   AWARENESS HERO SECTION (New)
+   ========================================================================== */
+.awareness-hero-card {
+  /* Healthy Food Background Image */
+  background: 
+    linear-gradient(90deg, rgba(255,245,248,0.95) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.4) 100%),
+    url('https://thumbs.dreamstime.com/b/serene-landscape-sailing-boats-woman-books-sunset-over-misty-ocean-409726604.jpg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 24px;
+  padding: 80px 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(214, 104, 156, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 
-.article-card { background: white; border: 1px solid #F0F0F0; border-radius: 16px; padding: 30px; transition: 0.3s; height: 100%; display: flex; flex-direction: column; }
-.article-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-color: #FBCFE8; }
+.hero-content {
+  max-width: 700px;
+  z-index: 2;
+}
+
+.hero-badge {
+  background: white;
+  color: #D6689C;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(214, 104, 156, 0.2);
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  color: #2D3748;
+  margin: 10px 0 20px 0;
+  font-family: 'Playfair Display', serif; /* Or system serif */
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.text-highlight {
+  color: #D6689C;
+  position: relative;
+  display: inline-block;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: #4A5568;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   UPDATED FEATURED ARTICLE CARDS (Attractive Effects)
+   ========================================================================== */
+.article-card {
+  background: white;
+  border: 1px solid #F0F0F0;
+  border-radius: 20px;
+  padding: 30px;
+  transition: all 0.4s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Hover Effect: Lift, Shadow, and Gradient Border look */
+.article-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(214, 104, 156, 0.12);
+  border-color: transparent;
+}
+
+/* Creating a soft gradient background on hover */
+.article-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #FFF, #FFF0F6);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.4s ease;
+}
+
+.article-card:hover::before {
+  opacity: 1;
+}
+
+/* Accent line on the left that grows on hover */
+.article-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 0%;
+  background-color: #D6689C;
+  border-radius: 0 4px 4px 0;
+  transition: height 0.4s ease;
+}
+
+.article-card:hover::after {
+  height: 70%;
+}
+
+/* Keep existing inner element styles but ensure Z-index is correct */
 .article-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.article-tag { background: #FFF5F5; color: #D6689C; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
-.read-time { font-size: 0.8rem; color: #A0AEC0; }
-.article-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 10px; color: #2D3748; }
-.article-desc { font-size: 0.95rem; color: #718096; margin-bottom: 20px; flex-grow: 1; }
-.read-link { color: #D6689C; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
-.read-link:hover { text-decoration: underline; }
+.article-tag { background: #FFF5F5; color: #D6689C; padding: 5px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+.read-time { font-size: 0.8rem; color: #A0AEC0; font-weight: 500; }
+.article-title { font-size: 1.35rem; font-weight: 700; margin-bottom: 12px; color: #2D3748; line-height: 1.4; }
+.article-desc { font-size: 0.95rem; color: #718096; margin-bottom: 25px; flex-grow: 1; line-height: 1.6; }
+.read-link { color: #D6689C; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: gap 0.2s; }
+.read-link:hover { text-decoration: none; gap: 12px; }
 
 .video-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #F7FAFC; transition: 0.3s; }
 .video-card:hover { transform: translateY(-3px); }
@@ -749,6 +868,134 @@ main { flex: 1; width: 100%; }
 /* ==========================================================================
    11. CONTACT PAGE
    ========================================================================== */
+/* ==========================================================================
+   CONTACT HERO SECTION (New)
+   ========================================================================== */
+.contact-hero-card {
+  /* Clean desk/communication background image */
+  background: 
+    linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,245,248,0.85) 100%),
+    url('https://images.unsplash.com/photo-1534536281715-e28d76689b4d?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  border-radius: 24px;
+  padding: 60px 20px;
+  box-shadow: 0 15px 35px rgba(214, 104, 156, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 50px;
+  border: 1px solid white;
+}
+
+.hero-badge {
+  background: white;
+  color: #D6689C;
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 10px rgba(214, 104, 156, 0.15);
+  display: inline-block;
+  margin-bottom: 15px;
+}
+
+.hero-title {
+  font-size: 3rem;
+  color: #2D3748;
+  margin: 10px 0 15px 0;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.hero-subtitle {
+  color: #718096;
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   ATTRACTIVE CARD EFFECTS
+   ========================================================================== */
+
+/* 1. The Contact Form Card */
+.contact-form-card { 
+  background: white; 
+  padding: 40px; 
+  border-radius: 24px; 
+  /* Soft double shadow for depth */
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.04),
+    0 1px 3px rgba(0,0,0,0.02);
+  border: 1px solid #F7FAFC; 
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
+  position: relative;
+  z-index: 1;
+}
+
+/* Hover Effect: Lifts up and glow intensifies */
+.contact-form-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(214, 104, 156, 0.15);
+  border-color: #FBCFE8;
+}
+
+/* 2. The Purple Info Card Effect */
+.info-card-purple { 
+  background: linear-gradient(135deg, #D6689C 0%, #B370B0 100%); 
+  color: white; 
+  padding: 35px; 
+  border-radius: 24px; 
+  margin-bottom: 25px; 
+  box-shadow: 0 10px 25px rgba(214, 104, 156, 0.3);
+  transition: transform 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle shine effect on hover for purple card */
+.info-card-purple::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+
+.info-card-purple:hover::before {
+  left: 100%;
+}
+
+.info-card-purple:hover {
+  transform: translateY(-5px);
+}
+
+/* 3. Input Field Effects */
+.form-input, .form-textarea {
+  width: 100%; 
+  padding: 14px 18px; /* Slightly bigger padding */
+  border: 2px solid #EDF2F7; /* Thicker, lighter border initially */
+  border-radius: 12px;
+  font-size: 0.95rem; 
+  font-family: 'Poppins', sans-serif; 
+  transition: all 0.3s ease; 
+  background-color: #FAFAFA;
+}
+
+.form-input:focus, .form-textarea:focus { 
+  border-color: #D6689C; 
+  outline: none; 
+  background-color: white; 
+  box-shadow: 0 0 0 4px rgba(214, 104, 156, 0.1); /* Soft glow ring */
+  transform: scale(1.01); /* Micro interaction zoom */
+}
 .contact-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; align-items: start; }
 .contact-form-card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); border: 1px solid #F0F0F0; }
 .form-header { display: flex; align-items: center; gap: 12px; margin-bottom: 30px; color: #2D3748; }
@@ -1345,4 +1592,57 @@ a, button, .btn, .btn-primary, .step-box, .card {
   .card div[style*="height: 200px"] {
     height: 150px !important;
   }
+}
+
+/* ==========================================================================
+   GLOBAL PAGE ENTRANCE ANIMATIONS
+   ========================================================================== */
+
+/* 1. Define the Keyframes (The movement) */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px); /* Starts slightly lower */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Ends in natural position */
+  }
+}
+
+/* 2. Apply to your main page wrapper */
+/* This ensures every page wrapped in 'page-spacing' triggers this on load */
+.page-spacing {
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* ==========================================================================
+   OPTIONAL: STAGGERED CHILD ANIMATIONS (For a Pro Look)
+   ========================================================================== */
+/* If you want the items INSIDE the page to load one by one (cascading),
+   add this as well. It targets direct children of your page container */
+
+.page-spacing > * {
+  opacity: 0; /* Hidden initially */
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* First element (usually the Hero/Title) loads immediately */
+.page-spacing > *:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+/* Second element (usually grid or content) loads slightly later */
+.page-spacing > *:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+/* Third element loads even later */
+.page-spacing > *:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Fourth element... */
+.page-spacing > *:nth-child(4) {
+  animation-delay: 0.4s;
 }

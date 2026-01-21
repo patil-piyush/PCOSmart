@@ -115,16 +115,18 @@ const Awareness = () => {
   return (
     <div className="container page-spacing">
       
-      {/* 1. HERO SECTION */}
-      <div className="text-center mb-16">
-        <span className="badge">PCOS Awareness</span>
-        <h1 style={{ fontSize: '3rem', margin: '15px 0' }}>
-          Knowledge is <span style={{ color: '#D6689C' }}>Power</span>
-        </h1>
-        <p className="awareness-hero-text">
-          Explore articles, videos, and real stories from women managing PCOS. 
-          Education is the first step towards empowerment.
-        </p>
+      {/* 1. HERO SECTION - UPDATED */}
+      <div className="awareness-hero-card mb-16">
+        <div className="hero-content">
+          <span className="hero-badge">Lifestyle Guide</span>
+          <h1 className="hero-title">
+            Knowledge <span style={{ fontFamily: 'serif', fontStyle: 'italic' }}>is</span> <span className="text-highlight">Power</span>
+          </h1>
+          <p className="hero-subtitle">
+            Explore articles, videos, and real stories from women managing PCOS. 
+            Education is the first step towards empowerment.
+          </p>
+        </div>
       </div>
 
       {/* 2. FEATURED ARTICLES */}

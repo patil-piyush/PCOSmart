@@ -137,7 +137,7 @@ const DietExercise = () => {
       <div className="hero-header mb-12 fade-in">
         <div className="hero-content text-center">
           <span className="badge" style={{ background: 'rgba(255,255,255,0.95)' }}>Lifestyle Guide</span>
-          <h1 style={{ fontSize: '3.5rem', margin: '15px 0', color: '#1A202C' }}>Diet & <span style={{ color: '#D53F8C' }}>Wellness</span></h1>
+          <h1 style={{ fontSize: '3.5rem', margin: '15px 0', color: '#1A202C' }}>Diet & <span style={{ color: '#D53F8C' }}>Exercise</span></h1>
           <p style={{ color: '#2D3748', fontWeight: '500' }}>Interactive guide for PCOS nutrition and fitness</p>
         </div>
       </div>
