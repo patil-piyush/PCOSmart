@@ -989,3 +989,365 @@ a, button, .btn, .btn-primary, .step-box, .card {
   transform: translateY(-5px); /* Lift Effect */
 }
 
+<<<<<<< HEAD
+=======
+/* =========================================
+   AUTO-SCROLLING VIDEO SLIDER (INFINITE LOOP)
+   ========================================= */
+
+/* The window that hides the overflow */
+.slider-viewport {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  padding: 10px 0;
+}
+
+/* The long track containing all slides (original + duplicates) */
+.slider-track {
+  display: flex;
+  width: max-content; /* Adjust width to fit content exactly */
+  gap: 20px;
+  /* Animation: name duration curve infinite */
+  animation: scroll 40s linear infinite; 
+}
+
+/* Pause the animation when user hovers over the track */
+.slider-track:hover {
+  animation-play-state: paused;
+}
+
+/* The individual video wrapper */
+.video-slide-item {
+  min-width: 320px;
+  width: 320px;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Keyframes for the scrolling effect */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Move left by 50% of the total width. 
+       Since we duplicated the list, 50% is exactly one full set of videos. 
+       This creates a seamless loop. */
+    transform: translateX(-50%);
+  }
+}
+
+/* ==================================
+   DIET & EXERCISE PAGE STYLES
+   ================================== */
+
+/* Hero Header with Background Image */
+.hero-header {
+  /* Linear gradient overlay with 0.6 opacity to ensure image visibility */
+  background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), 
+              url('https://www.shutterstock.com/image-photo/balanced-diet-healthy-foods-plate-600nw-2447832645.jpg');
+  background-size: cover;
+  background-position: center;
+  
+  /* Increased padding to give the background more space to show */
+  padding: 80px 20px;
+  
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+  
+  /* Ensure text sits on top */
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  /* Make text darker to stand out against the background */
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* Ayurveda Bullet Point Style */
+.dot-orange {
+  position: relative;
+  padding-left: 20px;
+}
+
+.dot-orange::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  background-color: #DD6B20; /* Orange color */
+  border-radius: 50%;
+}
+
+/* =========================================
+   1. CARD STYLING (Clean, No Hover Lift)
+   ========================================= */
+.card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Static shadow */
+  border: 1px solid #edf2f7;
+  position: relative;
+  overflow: hidden;
+}
+
+/* =========================================
+   2. DROPDOWN (ACCORDION) STYLES
+   ========================================= */
+.dropdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dropdown-item {
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 0 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  background: #fff;
+}
+
+.dropdown-item:active {
+  background-color: #F7FAFC; /* Visual feedback on click */
+}
+
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  font-weight: 600;
+  color: #2D3748;
+}
+
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, padding 0.3s ease;
+  padding: 0;
+  color: #718096;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.dropdown-content.open {
+  max-height: 100px; /* Adjust based on content length */
+  padding-bottom: 15px;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 5px;
+  padding-top: 10px;
+}
+
+/* Dot Indicators */
+.dot-indicator {
+  display: flex;
+  align-items: center;
+}
+.dot-indicator::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.dot-green::before { background: #48BB78; }
+.dot-red::before { background: #F56565; }
+.dot-orange::before { background: #DD6B20; }
+
+/* =========================================
+   3. SLIDESHOW (EXERCISE) STYLES
+   ========================================= */
+.slideshow-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.slideshow-card {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slideshow-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.slide-btn {
+  background: #F7FAFC;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #D6689C;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.slide-btn:active {
+  background: #E2E8F0;
+}
+
+/* Indicators (dots at bottom) */
+.slide-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #E2E8F0;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.indicator.active {
+  background: #D6689C;
+  width: 20px;
+  border-radius: 10px;
+}
+
+/* Slide Animation */
+.fade-in-slide {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* =========================================
+   4. ENTRANCE ANIMATIONS
+   ========================================= */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out forwards;
+  animation-delay: 0.2s; /* Slight delay */
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   5. SIDE IMAGE CARD LAYOUT
+   ========================================= */
+
+/* Default: Hide the image on small screens (Mobile) */
+.hidden {
+  display: none;
+}
+
+/* Image Styling */
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px; /* Matches rounded-xl */
+}
+
+/* Desktop View (Tablet and up) */
+@media (min-width: 768px) {
+  
+  /* Turn the card into a horizontal Flexbox */
+  .card.md\:flex {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch; /* Makes image same height as content */
+  }
+
+  /* Text Container (Takes remaining space) */
+  .flex-1 {
+    flex: 1;
+    padding-right: 20px; /* Replaces pr-4 */
+  }
+
+  /* Image Container (Takes 1/3 width) */
+  .md\:block {
+    display: block !important;
+  }
+
+  .w-1\/3 {
+    width: 35%; /* Approx 1/3 width */
+    flex-shrink: 0; /* Prevents image from shrinking */
+    margin-left: 20px; /* Replaces ml-4 */
+  }
+
+  /* Ensure the image container handles the height correctly */
+  .overflow-hidden {
+    overflow: hidden;
+  }
+}
+
+/* =========================================
+   ADD TO App.css
+   ========================================= */
+
+/* 1. Ayurveda Image Animation */
+/* This makes the banner image zoom in slightly when you hover the card */
+.card img {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+/* 2. Card Container Safety */
+/* Ensures the zoomed image doesn't overflow the rounded corners */
+.card {
+  overflow: hidden; 
+  /* (Existing .card styles should remain, just ensure overflow is hidden) */
+}
+
+/* 3. Mobile Adjustments */
+/* Makes the header images slightly shorter on mobile to save screen space */
+@media (max-width: 768px) {
+  .card div[style*="height: 200px"] {
+    height: 150px !important;
+  }
+}
+>>>>>>> c6a020b9e11b21ff62ac752290d4cd6c64df5a4b
