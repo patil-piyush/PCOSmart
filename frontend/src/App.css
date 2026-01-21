@@ -195,9 +195,7 @@ main { flex: 1; width: 100%; }
 /* ==========================================================================
    5. HOME PAGE
    ========================================================================== */
-/* =========================================
-   UPDATED HERO SECTION (Centered & Custom Watermark)
-   ========================================= */
+
 
 .hero {
   /* Layout */
@@ -989,8 +987,6 @@ a, button, .btn, .btn-primary, .step-box, .card {
   transform: translateY(-5px); /* Lift Effect */
 }
 
-<<<<<<< HEAD
-=======
 /* =========================================
    AUTO-SCROLLING VIDEO SLIDER (INFINITE LOOP)
    ========================================= */
@@ -1350,4 +1346,3 @@ a, button, .btn, .btn-primary, .step-box, .card {
     height: 150px !important;
   }
 }
->>>>>>> c6a020b9e11b21ff62ac752290d4cd6c64df5a4b
